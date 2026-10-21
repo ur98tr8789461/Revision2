@@ -7,24 +7,38 @@ const resultTitle = document.querySelector('#result-title');
 const total = document.querySelector('#plan-total');
 const blocks = document.querySelector('#plan-blocks');
 const openButtons = document.querySelectorAll('[data-open-plan]');
+let returnFocus = null;
+
+function showForm() {
+  result.hidden = true;
+  form.hidden = false;
+  subjectInput.focus();
+}
 
 openButtons.forEach((button) => {
   button.hidden = false;
   button.addEventListener('click', () => {
+    returnFocus = button;
     if (!dialog.open) dialog.showModal();
-    window.setTimeout(() => subjectInput.focus(), 0);
+    showForm();
   });
 });
 
 document.querySelector('.dialog-close').addEventListener('click', () => dialog.close());
-document.querySelector('#edit-plan').addEventListener('click', () => {
-  result.hidden = true;
-  form.hidden = false;
-  subjectInput.focus();
-});
+document.querySelector('#edit-plan').addEventListener('click', showForm);
 
 dialog.addEventListener('click', (event) => {
   if (event.target === dialog) dialog.close();
+});
+
+dialog.addEventListener('close', () => {
+  form.reset();
+  form.hidden = false;
+  result.hidden = true;
+  subjectInput.setCustomValidity('');
+  blocks.replaceChildren();
+  if (returnFocus?.isConnected) returnFocus.focus();
+  returnFocus = null;
 });
 
 const sessions = {
