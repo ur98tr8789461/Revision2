@@ -25,6 +25,10 @@ app.use((_request, response) => {
   response.status(404).send('Not found');
 });
 
-app.listen(port, () => {
-  console.log(`Aster is running at http://localhost:${port}`);
-});
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Aster is running at http://localhost:${port}`);
+  });
+}
+
+module.exports = app;
