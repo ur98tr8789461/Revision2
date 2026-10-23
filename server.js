@@ -5,6 +5,10 @@ const app = express();
 const port = Number(process.env.PORT) || 3000;
 const root = __dirname;
 
+app.get('/healthz', (_request, response) => {
+  response.status(200).json({ status: 'ok' });
+});
+
 app.get('/', (_request, response) => {
   response.sendFile(path.join(root, 'index.html'));
 });
